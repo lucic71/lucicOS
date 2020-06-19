@@ -1,0 +1,50 @@
+I. File structure
+-----------------
+
+A. Root directory
+-----------------
+
+Here shall be found the following files and directories:
+
+    iso       - GRUB directory that is used for emulation
+
+    kmain.c   - kernel source code
+
+    loader.s  - entry point in the OS that passes execution to kernel
+
+    m*/       - directories starting with 'm' shall contain modules that 
+        combined in kmain provide functionality for the OS
+
+    config/   - folder for config files
+
+    Documentation.txt - file that describes important aspects about the
+        structure, implementation, functionality, etc
+
+    README.md - brief explanation of the project
+
+    Makefile  - makefile to build the whole project
+
+Makefile rules:
+
+    all - recursively build all modules and combine them to get the kernel
+
+    run - run the OS in bochs emulator
+
+    clean - clean unimportant files (objects, executables, etc)
+
+B. Module directories
+---------------------
+
+In a module shall be found the following files and directories:
+
+    include/ - header files that declare the functionality of the module 
+
+    src/     - source files that implement the functionality of the module
+
+    header file - this file interfaces the whole module and can be accessed
+        kernel's source code
+
+    Documentation.txt - file that describes important aspects about the module
+
+    Makefile - makefile to build an object file used by the kernel
+

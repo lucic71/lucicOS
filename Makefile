@@ -2,13 +2,18 @@
 
 OBJECTS = loader.o kmain.o 
 
+# Configuration directory that contains files for building the project and 
+# testing it.
+
+CONFIG_DIR := config/
+
 # Flags for linker and compiler. Those options tell the compiler to stay chill
 # and let me handle libraries, linking and other stuff.
 
 CC = gcc
 CCFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		  -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
-LDFLAGS = -T link.ld -m elf_i386
+LDFLAGS = -T $(CONFIG_DIR)/link.ld -m elf_i386
 
 AS = nasm
 ASFLAGS = -f elf32
@@ -56,7 +61,7 @@ os.iso: kernel.elf
 
 # run - Run the emulator using the config file.
 
-BOCHS_CONFIG := bochsrc.txt
+BOCHS_CONFIG := $(CONFIG_DIR)/bochsrc.txt
 
 run: os.iso
 	bochs -f $(BOCHS_CONFIG) -q
