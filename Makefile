@@ -24,7 +24,7 @@ MOBJECTS = $(wildcard $(MDIRS)/*.o)
 
 # all - Default rule that build the entire project.
 
-all: kernel.elf mall
+all: mall kernel.elf 
 
 # mall - Recursively build all modules.
 
