@@ -28,6 +28,14 @@ enum vga_color {
 };
 
 /*
+ * Use the classic 80x25 mode for screen size.
+ *
+ */
+
+static const unsigned VGA_WIDTH  = 80;
+static const unsigned VGA_HEIGHT = 25;
+
+/*
  * vga_entry_color:
  *  Creates a VGA color encoding by combining foreground and background colors.
  *
@@ -50,6 +58,6 @@ unsigned char vga_entry_color(enum vga_color fg, enum vga_color bg);
  *
  */
 
-unsigned char vga_entry(unsigned char c, unsigned char color);
+unsigned short vga_entry(unsigned char c, unsigned char color);
 
 #endif
