@@ -13,7 +13,7 @@ display text on the screen.
 Format of Framebuffer cells
 ---------------------------
 
-The memory is divided into 16 cells that encapsulate the character and its 
+The memory is divided into 16 bit cells that encapsulate the character and its
 attributes. The character is placed in the right most 8 bits and the attributes
 in the left most 8 bits. (if we consider the format where LSB is on the left and
 MSB is on the right)
@@ -50,5 +50,5 @@ that can be displayed.
 Further work
 ------------
 
-Maybe I will also implement an way to disable/enable blinking by accessing 
+Maybe I will also implement a way to disable/enable blinking by accessing 
 specific I/O addresses.
