@@ -1,48 +1,74 @@
 # loader and kmain must be the only object files placed in the root directory.
 
-OBJECTS = loader.o kmain.o 
+OBJ = loader.o kmain.o 
 
 # Configuration directory that contains files for building the project and 
 # testing it.
 
 CONFIG_DIR := config/
 
-# Flags for linker and compiler. Those options tell the compiler to stay chill
-# and let me handle libraries, linking and other stuff.
+# Compiler settings
 
 CC = gcc
 CCFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
 		  -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+
+# Linker settings
+
+LD = ld
 LDFLAGS = -T $(CONFIG_DIR)/link.ld -m elf_i386
+
+# Assembler settings
 
 AS = nasm
 ASFLAGS = -f elf32
 
-# Each module directory starts with the character 'm'. MDIRS will search for such
-# directories and MOBJECTS will collect the module objects to be linked with the
-# root objects (loader and kmain).
+# Module directories are located in modules/
+# The interfaces are placed in module/include/ and the module objects are
+# located in each module under mobj/.
 
-MDIRS = $(wildcard m*)
-MOBJECTS = $(wildcard $(MDIRS)/*.o)
+MODULES_ROOT_DIR := modules/
+MODULE_DIR = $(wildcard $(MODULES_ROOT_DIR)/*)
+MODULE_INC_DIR = $(MODULES_ROOT_DIR)/include
 
-.PHONY: all clean mall
+# Locate the mobj/ directories and their contents.
 
-# all - Default rule that build the entire project.
+MODULE_OBJ_DIR = mobj/
+MODULE_OBJ = $(foreach TMP, $(MODULE_DIR), $(wildcard $(TMP)/$(MODULE_OBJ_DIR)/*.o))
 
-all: mall kernel.elf 
+# Exclude modules/include from module directories list.
 
-# mall - Recursively build all modules.
+MODULE_DIR := $(filter-out $(MODULE_INC_DIR), $(MODULE_DIR))
 
-mall:
-	for dir in $(MDIRS); do \
+# Libraries directory
+
+LIB_DIR = lib/
+
+# Include flags
+
+INCFLAGS = $(foreach TMP, $(MODULE_INC_DIR), -I$(TMP))
+
+.PHONY: all clean module_all
+
+# Build 
+
+all: lib_all | module_all kernel.elf 
+
+# module_all - Recursively build all modules.
+
+module_all:
+	for dir in $(MODULE_DIR); do \
 		$(MAKE) -C $$dir; \
 	done
+
+lib_all:
+	$(MAKE) -C $(LIB_DIR)
 
 # kernel.elf - Link all root objects and module objects to create the
 # kernel.elf executable
 
-kernel.elf: $(OBJECTS)
-	ld $(LDFLAGS) $(OBJECTS) $(MOBJECTS) -o kernel.elf
+kernel.elf: $(OBJ)
+	$(LD) $(LDFLAGS) $(OBJ) $(MODULE_OBJ) -o kernel.elf
 
 # os.iso - Create the OS image and place the kernel fiel in GRUB directory.
 
@@ -69,18 +95,25 @@ run: os.iso
 # Compile and assemble c and s files.
 
 %.o: %.c
-	$(CC) $(CCFLAGS) $< -o $@
+	$(CC) $(CCFLAGS) $(INCFLAGS) $< -o $@
 
 %.o: %.s
 	$(AS) $(ASFLAGS) $< -o $@
 
-# clean, mclean - Clean unuseful files from root directory and from module
-# directories
-
-clean: mclean
+clean: mclean lclean
 	@$(RM) *.o kernel.elf os.iso bochslog.txt iso/boot/kernel.elf
 
 mclean:
-	for dir in $(MDIRS); do \
-		$(MAKE) -C $$dir distclean; \
+	for dir in $(MODULE_DIR); do \
+		$(MAKE) -C $$dir clean; \
 	done
+
+lclean:
+	$(MAKE) -C $(LIB_DIR) clean
+
+# Function declarations
+
+define print_info
+	@echo ""
+	@echo $(1)
+endef
