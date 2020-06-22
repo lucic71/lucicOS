@@ -1,16 +1,23 @@
-#ifndef TERMINAL_H_
-#define TERMINAL_H_
+#ifndef SCREEN_H_
+#define SCREEN_H_
 
 /*
- * tinit:
+ * The starting address of the memory mapped I/O for the framebuffer.
+ *
+ */
+
+#define FBUFFER_START_ADDR 0x000B8000
+
+/*
+ * sinit:
  *  Initializes the terminal.
  *
  */
 
-void tinit(void);
+void sinit(void);
 
 /*
- * write:
+ * swrite:
  *  Writes the given buffer @buf of length @len on the screen, automatically
  *  advancing the cursor and scrolling the screen if necessary.
  *
@@ -19,6 +26,6 @@ void tinit(void);
  *
  */
 
-int twrite(char *buf, unsigned int len);
+int swrite(char *buf, unsigned int len);
 
 #endif

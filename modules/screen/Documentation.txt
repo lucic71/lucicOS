@@ -4,7 +4,7 @@ Framebuffer
 The framebuffer is a hardware device that is capable of displaying a buffer of
 memory on the screen. The framebuffer has 80 columns and 25 rows. We can
 communicate with it through a memory mapped I/O address and we can consider that
-it is an array of size 80x25. Its starting address is defined in terminal.h as
+it is an array of size 80x25. Its starting address is defined in screen.h as
 FBUFFER_START_ADDR.
 
 This module handles the communication with this framebuffer so that we can 
@@ -27,16 +27,16 @@ Depending of the mode setup, attribute bit 7 may be used for blinking thus
 only 3 bits remain for background color. Attribute bit 3 may be used for
 foreground intensity. Attribute bit 0 may be used for underline.
 
-Terminal
+Screen
 --------
 
-The reference code for this section can be found in terminal.h and terminal.c.
-There are two main operation to perform: tinit and twrite.
+The reference code for this section can be found in screen.h and screen.c.
+There are two main operation to perform: sinit and swrite.
 
-tinit will initiate the screen by filing the framebuffer with whitespaces
+sinit will initiate the screen by filing the framebuffer with whitespaces
 (ASCII character 0x20).
 
-twrite will put characters on the screen without updating the cursor (will
+swrite will put characters on the screen without updating the cursor (will
 be fixed in future commits).
 
 VGA
