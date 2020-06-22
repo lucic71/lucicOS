@@ -1,6 +1,8 @@
 #ifndef VGA_H_
 #define VGA_H_
 
+#include "stdint.h"
+
 /*
  * Definition of an enum type that contains codes for each VGA color.
  *
@@ -45,7 +47,7 @@ static const unsigned VGA_HEIGHT = 25;
  *
  */
 
-unsigned char vga_entry_color(enum vga_color fg, enum vga_color bg);
+uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg);
 
 /*
  * vga_entry:
@@ -58,6 +60,6 @@ unsigned char vga_entry_color(enum vga_color fg, enum vga_color bg);
  *
  */
 
-unsigned short vga_entry(unsigned char c, unsigned char color);
+uint16_t vga_entry(char c, uint8_t color);
 
 #endif
