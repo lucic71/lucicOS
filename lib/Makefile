@@ -3,6 +3,9 @@
 SO_DIR := so/
 INC_DIR := include/
 
+ROOT_DIR := ../
+SCRIPTS_DIR = $(ROOT_DIR)/scripts/
+
 # Directories containing actual code for libraries.
 
 LIB_DIR = $(wildcard */)
@@ -29,13 +32,17 @@ all: rbuild
 
 rbuild:
 	for dir in $(LIB_DIR); do \
+		cp $(SCRIPTS_DIR)/MakefileLib $$dir/Makefile; \
 		$(MAKE) -C $$dir; \
+		$(RM) $$dir/Makefile; \
 	done
 
 # Clean all libraries recursively.
 
 clean:
 	for dir in $(LIB_DIR); do \
+		cp $(SCRIPTS_DIR)/MakefileLib $$dir/Makefile; \
 		$(MAKE) -C $$dir clean; \
+		$(RM) $$dir/Makefile; \
 	done
 	@$(RM) -rv $(SO_DIR)/$(SO)

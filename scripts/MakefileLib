@@ -1,0 +1,76 @@
+# Stand-alone directories used to fetch source files and create object
+# files.
+
+SRC_DIR := src/
+ASM_DIR := asm/
+OBJ_DIR := obj
+LOBJ_DIR := lobj
+
+# Directory where library interfaces are kept.
+
+INC_DIR := ../include/
+
+# Final object file created by this library. It will have the same name
+# as the library directory.
+
+LIB_NAME = $(notdir $(shell pwd))
+LIB_OBJ := $(LOBJ_DIR)/$(LIB_NAME).o
+
+# C and assembly source code files.
+
+SRC := $(wildcard $(SRC_DIR)/*.c)
+ASM := $(wildcard $(ASM_DIR)/*.s)
+
+# Objects created from source files.
+
+OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+OBJ += $(ASM:$(ASM_DIR)/%.s=$(OBJ_DIR)/%.o)
+
+# Compiler settings.
+
+CC = gcc
+CCFLAGS = -m32 -fPIC -nostdlib -lgcc -nostdinc -fno-builtin -fno-stack-protector \
+		  -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+HFLAGS = -MMD 
+
+# Linker settings.
+
+LD = ld
+LDFLAGS = -relocatable -m elf_i386
+
+# Archiver
+
+AR = ar
+ARFLAGS = rcs
+
+# Include flags.
+
+INCFLAGS := $(foreach TMP, $(INC_DIR), -I$(TMP))
+
+# Assembler and flags for assembler.
+
+AS = nasm
+ASFLAGS = -f elf32
+
+.PHONY: all clean
+
+# Start of rules.
+
+all: $(LIB_OBJ)
+
+$(LIB_OBJ): $(OBJ) | $(LOBJ_DIR)
+	$(LD) $(LDFLAGS) $(OBJ) -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+	$(CC) $(CCFLAGS) $(HFLAGS) $(INCFLAGS) $< -o $@
+
+$(OBJ_DIR)/%.o: $(ASM_DIR)/%.s | $(OBJ_DIR)
+	$(AS) $(ASFLAGS) $< -o $@
+
+$(LOBJ_DIR) $(OBJ_DIR):
+	mkdir -p $@
+
+clean:
+	@$(RM) -rv $(LOBJ_DIR) $(OBJ_DIR)
+
+-include $(OBJ:.o=.d)
