@@ -1,3 +1,6 @@
+I. Introduction
+---------------
+
 Framebuffer
 -----------
 
@@ -27,8 +30,8 @@ Depending of the mode setup, attribute bit 7 may be used for blinking thus
 only 3 bits remain for background color. Attribute bit 3 may be used for
 foreground intensity. Attribute bit 0 may be used for underline.
 
-Screen
---------
+II. Implementations
+------------------
 
 The reference code for this section can be found in screen.h and screen.c.
 There are two main operation to perform: sinit and swrite.
@@ -39,16 +42,8 @@ sinit will initiate the screen by filing the framebuffer with whitespaces
 swrite will put characters on the screen without updating the cursor (will
 be fixed in future commits).
 
-VGA
----
-
-The reference code for this section can be found in vga.h and vga.c.
-In vga.c we shall find functions that create framebuffer cell entries and
-attributes for characters, while in vga.h we shall find definition of colors
-that can be displayed.
-
-Further work
-------------
+III. Further work
+-----------------
 
 Maybe I will also implement a way to disable/enable blinking by accessing 
 specific I/O addresses.

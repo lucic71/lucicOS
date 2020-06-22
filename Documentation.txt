@@ -4,7 +4,8 @@ I. File structure
 A. Root directory
 -----------------
 
-Here shall be found the following files and directories:
+File structure
+--------------
 
     iso       - GRUB directory that is used for emulation
 
@@ -12,10 +13,11 @@ Here shall be found the following files and directories:
 
     loader.s  - entry point in the OS that passes execution to kernel
 
-    m*/       - directories starting with 'm' shall contain modules that 
-        combined in kmain provide functionality for the OS
+    modules/  - list of modules, each module is kept in a different directory
 
     config/   - folder for config files
+
+    scripts/  - useful scripts and templates
 
     Documentation.txt - file that describes important aspects about the
         structure, implementation, functionality, etc
@@ -24,7 +26,8 @@ Here shall be found the following files and directories:
 
     Makefile  - makefile to build the whole project
 
-Makefile rules:
+Makefile rules
+--------------
 
     all - recursively build all modules and combine them to get the kernel
 
@@ -35,16 +38,11 @@ Makefile rules:
 B. Module directories
 ---------------------
 
-In a module shall be found the following files and directories:
+File structure
+--------------
 
-    include/ - header files that declare the functionality of the module 
+    include/ - interfaces for modules
 
-    src/     - source files that implement the functionality of the module
-
-    header file - this file interfaces the whole module and can be accessed
-        kernel's source code
-
-    Documentation.txt - file that describes important aspects about the module
-
-    Makefile - makefile to build an object file used by the kernel
-
+    module_dir/ - implementation of module. Each module must have a short
+        description of what it does and a Makefile that will describe what
+        libraries it uses and other important configuration

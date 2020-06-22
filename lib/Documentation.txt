@@ -1,0 +1,14 @@
+I. File Structure
+-----------------
+
+    include/ - interfaces for library functions, only modules are intended to
+        access them
+
+    so/ - archives and shared objects used by modules in linking stage
+
+    lib_dir/ - asm/ assembly implementations
+             - src/ C implementations
+
+    Makefile - build sources from lib_dirs using a template Makefile which can
+        be found in /scripts/ and links the resulting objects in different
+        shared objects and archives which can be found in so/
