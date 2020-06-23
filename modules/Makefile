@@ -6,11 +6,16 @@ MODULE_INC_DIR = include/
 MODULE_DIR := $(filter-out $(MODULE_INC_DIR), $(MODULE_DIR))
 
 all:
-	for dir in $(MODULE_DIR); do \
-		$(MAKE) -C $$dir; \
-	done
+	@echo
+	@$(foreach MODULE, $(MODULE_DIR), \
+		$(MAKE) -C $(MODULE); \
+		echo ""; \
+	)
+
 
 clean:
-	for dir in $(MODULE_DIR); do \
-		$(MAKE) -C $$dir clean; \
-	done
+	@echo
+	@$(foreach MODULE, $(MODULE_DIR), \
+		$(MAKE) -C $(MODULE) clean; \
+		echo ""; \
+	)

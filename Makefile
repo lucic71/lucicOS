@@ -57,15 +57,20 @@ all: lib_all | module_all kernel.elf
 # module_all - Recursively build all modules.
 
 module_all:
-	$(MAKE) -C $(MODULES_ROOT_DIR)
+	@$(call print_banner, "Building modules")
+	@$(MAKE) -C $(MODULES_ROOT_DIR)
+	@echo
 
 lib_all:
-	$(MAKE) -C $(LIB_DIR)
+	@$(call print_banner, "Building the library")
+	@$(MAKE) -C $(LIB_DIR)
+	@echo
 
 # kernel.elf - Link all root objects and module objects to create the
 # kernel.elf executable
 
 kernel.elf: $(OBJ)
+	@$(call print_banner, "Building the kernel")
 	$(LD) $(LDFLAGS) $(OBJ) $(MODULE_OBJ) -o kernel.elf
 
 # os.iso - Create the OS image and place the kernel fiel in GRUB directory.
@@ -99,17 +104,21 @@ run: os.iso
 	$(AS) $(ASFLAGS) $< -o $@
 
 clean: mclean lclean
+	@$(call print_banner, "Cealning root directory")
 	@$(RM) *.o kernel.elf os.iso bochslog.txt iso/boot/kernel.elf
 
 mclean:
+	@$(call print_banner, "Cleaning the modules")
 	$(MAKE) -C $(MODULES_ROOT_DIR) clean
 
 lclean:
+	@$(call print_banner, "Cleaning the library")
 	$(MAKE) -C $(LIB_DIR) clean
 
-# Function declarations
+# Functions
 
-define print_info
-	@echo ""
-	@echo $(1)
+define print_banner
+	@echo
+	@echo "*************** $(1) ***************"
+	@echo
 endef

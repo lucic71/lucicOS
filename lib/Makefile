@@ -31,18 +31,22 @@ all: rbuild
 # Build all libraries recursively.
 
 rbuild:
-	for dir in $(LIB_DIR); do \
-		cp $(SCRIPTS_DIR)/MakefileLib $$dir/Makefile; \
-		$(MAKE) -C $$dir; \
-		$(RM) $$dir/Makefile; \
-	done
+	@echo
+	@$(foreach LIB, $(LIB_DIR), \
+		cp $(SCRIPTS_DIR)/MakefileLib $(LIB)/Makefile; \
+		$(MAKE) -C $(LIB); \
+		$(RM) $(LIB)/Makefile; \
+		echo; \
+	)
 
 # Clean all libraries recursively.
 
 clean:
-	for dir in $(LIB_DIR); do \
-		cp $(SCRIPTS_DIR)/MakefileLib $$dir/Makefile; \
-		$(MAKE) -C $$dir clean; \
-		$(RM) $$dir/Makefile; \
-	done
+	@echo
+	@$(foreach LIB, $(LIB_DIR), \
+		cp $(SCRIPTS_DIR)/MakefileLib $(LIB)/Makefile; \
+		$(MAKE) -C $(LIB) clean; \
+		$(RM) $(LIB)/Makefile; \
+		echo; \
+	)
 	@$(RM) -rv $(SO_DIR)/$(SO)
