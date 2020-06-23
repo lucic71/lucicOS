@@ -57,9 +57,7 @@ all: lib_all | module_all kernel.elf
 # module_all - Recursively build all modules.
 
 module_all:
-	for dir in $(MODULE_DIR); do \
-		$(MAKE) -C $$dir; \
-	done
+	$(MAKE) -C $(MODULES_ROOT_DIR)
 
 lib_all:
 	$(MAKE) -C $(LIB_DIR)
@@ -104,9 +102,7 @@ clean: mclean lclean
 	@$(RM) *.o kernel.elf os.iso bochslog.txt iso/boot/kernel.elf
 
 mclean:
-	for dir in $(MODULE_DIR); do \
-		$(MAKE) -C $$dir clean; \
-	done
+	$(MAKE) -C $(MODULES_ROOT_DIR) clean
 
 lclean:
 	$(MAKE) -C $(LIB_DIR) clean
