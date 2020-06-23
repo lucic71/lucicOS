@@ -7,7 +7,7 @@ MODULES_DIR := ../
 
 SRC_DIR := src/
 OBJ_DIR := obj/
-INC_DIR := $(MODULES_DIR)/include/
+INC_DIR := $(MODULES_DIR)/include/ ./include/
 MOBJ_DIR := mobj/
 
 # MOD_OBJ - Module Object. Its name will be the same as the module so it is

@@ -1,6 +1,7 @@
 #include "screen.h"
 
 #include "iscreen.h"
+#include "cursor.h"
 
 #include "vga.h"
 #include "memio.h"
@@ -120,7 +121,11 @@ void sscroll_up(void) {
  * --------
  *
  *  Wrapper function over sputchar_at. Puts the character in framebuffer and
- *  furthermore supports newline characters and scrolling the screen up.
+ *  has support for newline characters.
+ *
+ *  Side efects:
+ *   scrolls up the screen whenever there is no more space
+ *   moves the cursor after each displayed characte
  *
  */
 
@@ -141,6 +146,7 @@ void sputchar(char c) {
         return;
 
     sputchar_at(c, screen_color, screen_column++, screen_row);
+    smove_cursor(screen_column, screen_row);
 
 }
 

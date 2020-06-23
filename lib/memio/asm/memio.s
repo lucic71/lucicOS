@@ -1,4 +1,4 @@
-global mio_out
+global outb
 
 outb:
 

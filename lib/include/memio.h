@@ -14,4 +14,6 @@
 
 void outb(uint16_t port, uint8_t data);
 
+void foo(void);
+
 #endif
