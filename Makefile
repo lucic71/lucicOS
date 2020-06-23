@@ -48,6 +48,13 @@ LIB_DIR = lib/
 
 INCFLAGS = $(foreach TMP, $(MODULE_INC_DIR), -I$(TMP))
 
+# Library flags
+
+LIB_SO_DIR := lib/so
+
+LIBFLAGS = $(foreach TMP, $(LIB_SO_DIR), -L$(TMP))
+LIBS = -lklib
+
 .PHONY: all clean module_all
 
 # Build 
@@ -71,7 +78,7 @@ lib_all:
 
 kernel.elf: $(OBJ)
 	@$(call print_banner, "Building the kernel")
-	$(LD) $(LDFLAGS) $(OBJ) $(MODULE_OBJ) -o kernel.elf
+	$(LD) $(LDFLAGS) $(OBJ) $(MODULE_OBJ) -o kernel.elf $(LIBFLAGS) $(LIBS) 
 
 # os.iso - Create the OS image and place the kernel fiel in GRUB directory.
 

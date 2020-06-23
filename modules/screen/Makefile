@@ -19,7 +19,6 @@ MOD_OBJ := $(MOBJ_DIR)/$(CURR_DIR).o
 # Library dependencies
 
 LIB_INC_DIR := $(ROOT_DIR)/lib/include
-LIB_SO_DIR := $(ROOT_DIR)/lib/so
 
 # Module sources and their object files
 
@@ -38,11 +37,6 @@ HFLAGS = -MMD
 LD = ld
 LDFLAGS = -relocatable -m elf_i386
 
-# Library flags
-
-LIBFLAGS = $(foreach TMP, $(LIB_SO_DIR), -L$(TMP))
-LIBS = -lklib
-
 # INCFLAGS - include directories for each dependency. These dependencies
 # include module dependencies and the include directory inside the current 
 # module
@@ -57,7 +51,7 @@ INCFLAGS += $(foreach TMP, $(INC_DIR), -I$(TMP))
 all: $(MOD_OBJ) 
 
 $(MOD_OBJ): $(OBJ) | $(MOBJ_DIR)
-	$(LD) $(LDFLAGS) $(OBJ) -o $@ $(LIBFLAGS) $(LIBS) 
+	$(LD) $(LDFLAGS) $(OBJ) -o $@ 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CCFLAGS) $(HFLAGS) $(INCFLAGS) $< -o $@
