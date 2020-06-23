@@ -1,5 +1,9 @@
 #include "screen.h"
+
+#include "iscreen.h"
+
 #include "vga.h"
+#include "memio.h"
 
 /*
  * Variables that determine the state of the screen.
@@ -21,6 +25,7 @@ void sputchar_at(char c, unsigned short color, unsigned x, unsigned y);
 void sputchar(char c);
 
 void sscroll_up(void);
+void supdate_cursor(void);
 
 /*
  * sinit:
@@ -138,4 +143,5 @@ void sputchar(char c) {
     sputchar_at(c, screen_color, screen_column++, screen_row);
 
 }
+
 
