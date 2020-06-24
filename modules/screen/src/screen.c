@@ -22,11 +22,10 @@ static unsigned screen_color;
  *
  */
 
-void sputchar_at(char c, unsigned short color, unsigned x, unsigned y);
-void sputchar(char c);
+static void sputchar_at(char c, unsigned short color, unsigned x, unsigned y);
+static void sputchar(char c);
 
-void sscroll_up(void);
-void supdate_cursor(void);
+static void sscroll_up(void);
 
 /*
  * sinit:
@@ -89,7 +88,7 @@ int swrite(char *buf, unsigned int len) {
  *
  */
 
-void sputchar_at(char c, unsigned short color, unsigned x, unsigned y) {
+static void sputchar_at(char c, unsigned short color, unsigned x, unsigned y) {
 
     const unsigned index = y * VGA_WIDTH + x;
     fbuffer[index] = vga_entry(c, color);
@@ -104,7 +103,7 @@ void sputchar_at(char c, unsigned short color, unsigned x, unsigned y) {
  *
  */
 
-void sscroll_up(void) {
+static void sscroll_up(void) {
 
     unsigned i;
     
@@ -129,7 +128,7 @@ void sscroll_up(void) {
  *
  */
 
-void sputchar(char c) {
+static void sputchar(char c) {
 
     if (screen_column == VGA_WIDTH || c == '\n') {
         
@@ -149,5 +148,3 @@ void sputchar(char c) {
     smove_cursor(screen_column, screen_row);
 
 }
-
-

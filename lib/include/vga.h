@@ -34,8 +34,8 @@ enum vga_color {
  *
  */
 
-static const unsigned VGA_WIDTH  = 80;
-static const unsigned VGA_HEIGHT = 25;
+#define VGA_WIDTH  80
+#define VGA_HEIGHT 25
 
 /*
  * vga_entry_color:
