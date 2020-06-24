@@ -5,16 +5,16 @@
 
 /* Cursor I/O ports. */
 
-#define C_COMMAND_PORT 0x3D4
-#define C_DATA_PORT    0x3D5
+#define CURSOR_COMMAND_PORT 0x3D4
+#define CURSOR_DATA_PORT    0x3D5
 
 /* Cursor I/O port commands. */
 
-#define C_HIGH_BYTE_COMMAND 0X0E
-#define C_LOW_BYTE_COMMAND  0x0F
+#define CURSOR_HIGH_BYTE_COMMAND 0X0E
+#define CURSOR_LOW_BYTE_COMMAND  0x0F
 
 /*
- * smove_cursor:
+ * screen_move_cursor:
  *  Moves the cursor of the framebuffer to a give position calculated using
  *  @x and @y coordinates.
  *
@@ -23,6 +23,6 @@
  *
  */
 
-void smove_cursor(uint8_t x, uint8_t y);
+void screen_move_cursor(uint8_t x, uint8_t y);
 
 #endif

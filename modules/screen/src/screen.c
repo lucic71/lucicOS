@@ -1,6 +1,6 @@
 #include "screen.h"
 
-#include "iscreen.h"
+#include "framebuffer.h"
 #include "cursor.h"
 
 #include "vga.h"
@@ -22,13 +22,13 @@ static unsigned screen_color;
  *
  */
 
-static void sputchar_at(char c, unsigned short color, unsigned x, unsigned y);
-static void sputchar(char c);
+static void screen_putchar_at(char c, unsigned short color, unsigned x, unsigned y);
+static void screen_putchar(char c);
 
-static void sscroll_up(void);
+static void screen_scroll_up(void);
 
 /*
- * sinit:
+ * screen_init:
  * ------
  *
  *  Initialize @screen_row and @screen_column.
@@ -37,7 +37,7 @@ static void sscroll_up(void);
  *
  */
 
-void sinit(void) {
+void screen_init(void) {
 
     screen_row = 0;
     screen_column = 0;
@@ -57,38 +57,35 @@ void sinit(void) {
 }
 
 /*
- * swrite:
- * -------
+ * screen_write:
+ * -------------
  *
  *  Writes the characters one by one in framebuffer using a specialized function.
  *
  */
     
-int swrite(char *buf, unsigned int len) {
+size_t screen_write(char *buf, size_t len) {
 
-    volatile unsigned i = 0;
+    volatile size_t i = 0;
 
     for (i = 0; i < len; i++)
-        sputchar(buf[i]);
+        screen_putchar(buf[i]);
 
     return i;
 }
 
-/*
- * PRIVATE FUNCTIONS
- *
- */
+/* PRIVATE FUNCTIONS */
 
 /*
- * sputchar_at:
- * ------------
+ * screen_putchar_at:
+ * ------------------
  *
  *  Put the character @c of color @color in framebuffer at the index determined
  *  by @x and @y coordinates.
  *
  */
 
-static void sputchar_at(char c, unsigned short color, unsigned x, unsigned y) {
+static void screen_putchar_at(char c, unsigned short color, unsigned x, unsigned y) {
 
     const unsigned index = y * VGA_WIDTH + x;
     fbuffer[index] = vga_entry(c, color);
@@ -96,14 +93,14 @@ static void sputchar_at(char c, unsigned short color, unsigned x, unsigned y) {
 }
 
 /*
- * sscroll_up:
- * -----------
+ * screen_scroll_up:
+ * -----------------
  *
  *  Scroll the first 24 lines and delete the content of the last line.
  *
  */
 
-static void sscroll_up(void) {
+static void screen_scroll_up(void) {
 
     unsigned i;
     
@@ -116,10 +113,10 @@ static void sscroll_up(void) {
 }
 
 /*
- * tpuchar:
- * --------
+ * screen_puchar:
+ * --------------
  *
- *  Wrapper function over sputchar_at. Puts the character in framebuffer and
+ *  Wrapper function over screen_putchar_at. Puts the character in framebuffer and
  *  has support for newline characters.
  *
  *  Side efects:
@@ -128,14 +125,14 @@ static void sscroll_up(void) {
  *
  */
 
-static void sputchar(char c) {
+static void screen_putchar(char c) {
 
     if (screen_column == VGA_WIDTH || c == '\n') {
         
         screen_column = 0;
 
         if (screen_row == VGA_HEIGHT - 1)
-            sscroll_up();
+            screen_scroll_up();
         else
             screen_row++;
 
@@ -144,7 +141,7 @@ static void sputchar(char c) {
     if (c == '\n')
         return;
 
-    sputchar_at(c, screen_color, screen_column++, screen_row);
-    smove_cursor(screen_column, screen_row);
+    screen_putchar_at(c, screen_color, screen_column++, screen_row);
+    screen_move_cursor(screen_column, screen_row);
 
 }

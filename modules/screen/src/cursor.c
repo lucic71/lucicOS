@@ -4,8 +4,8 @@
 #include "vga.h"
 
 /*
- * smove_cursor:
- * -------------
+ * screen_move_cursor:
+ * -------------------
  *
  *  Compute the screen index, @sindex, using the given coordinates and send
  *  its high and low bytes to cursor data port.
@@ -16,14 +16,14 @@
  *
  */
 
-void smove_cursor(uint8_t x, uint8_t y) {
+void screen_move_cursor(uint8_t x, uint8_t y) {
 
     uint16_t sindex = y * VGA_WIDTH + x;
 
-    outb(C_COMMAND_PORT, C_HIGH_BYTE_COMMAND);
-    outb(C_DATA_PORT, ((sindex >> 8)) & 0x00FF);
+    outb(CURSOR_COMMAND_PORT, CURSOR_HIGH_BYTE_COMMAND);
+    outb(CURSOR_DATA_PORT, ((sindex >> 8)) & 0x00FF);
 
-    outb(C_COMMAND_PORT, C_LOW_BYTE_COMMAND);
-    outb(C_DATA_PORT, sindex & 0x00FF);
+    outb(CURSOR_COMMAND_PORT, CURSOR_LOW_BYTE_COMMAND);
+    outb(CURSOR_DATA_PORT, sindex & 0x00FF);
 
 }

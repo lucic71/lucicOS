@@ -49,12 +49,12 @@ II. Implementations
 ------------------
 
 The reference code for this section can be found in screen.h and screen.c.
-There are two main operation to perform: sinit and swrite.
+There are two main operation to perform: screen_init and screen_write.
 
-sinit will initiate the screen by filing the framebuffer with whitespaces
+screen_init will initiate the screen by filing the framebuffer with whitespaces
 (ASCII character 0x20).
 
-swrite will put characters on the screen and will update the cursor too.
+screen_write will put characters on the screen and will update the cursor too.
 
 III. Further work
 -----------------
