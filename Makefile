@@ -23,13 +23,19 @@ LDFLAGS = -T $(CONFIG_DIR)/link.ld -m elf_i386
 AS = nasm
 ASFLAGS = -f elf32
 
+# Libraries directory. Normally I don't want to include the library headers
+# in kmain, but given the fact that in the module interfaces there are includes
+# from lib, they must be resolved when linking kmain.
+
+LIB_DIR = lib/
+
 # Module directories are located in modules/
 # The interfaces are placed in module/include/ and the module objects are
 # located in each module under mobj/.
 
 MODULES_ROOT_DIR := modules/
 MODULE_DIR = $(wildcard $(MODULES_ROOT_DIR)/*)
-MODULE_INC_DIR = $(MODULES_ROOT_DIR)/include
+MODULE_INC_DIR = $(MODULES_ROOT_DIR)/include $(LIB_DIR)/include
 
 # Locate the mobj/ directories and their contents.
 
@@ -39,10 +45,6 @@ MODULE_OBJ = $(foreach TMP, $(MODULE_DIR), $(wildcard $(TMP)/$(MODULE_OBJ_DIR)/*
 # Exclude modules/include from module directories list.
 
 MODULE_DIR := $(filter-out $(MODULE_INC_DIR), $(MODULE_DIR))
-
-# Libraries directory
-
-LIB_DIR = lib/
 
 # Include flags
 
