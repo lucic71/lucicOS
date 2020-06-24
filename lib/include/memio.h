@@ -14,4 +14,15 @@
 
 void outb(uint16_t port, uint8_t data);
 
+/*
+ * inb:
+ *  Reads a byte from an I/O port.
+ *
+ * @param port - The address of the I/O port.
+ * @return     - The read byte
+ *
+ */
+
+uint8_t inb(uint16_t port);
+
 #endif
