@@ -3,6 +3,8 @@
 SO_DIR := so/
 INC_DIR := include/
 
+# Upper directories
+
 ROOT_DIR := ../
 SCRIPTS_DIR = $(ROOT_DIR)/scripts/
 
@@ -25,6 +27,10 @@ SO := libklib.a
 AR = ar
 ARFLAGS = rcs
 
+# Makefile for each library
+
+MAKEFILE = $(SCRIPTS_DIR)/Makefile.Library
+
 all: rbuild
 	$(AR) $(ARFLAGS) $(SO_DIR)/$(SO) $(LIB_OBJ)
 
@@ -33,7 +39,7 @@ all: rbuild
 rbuild:
 	@echo
 	@$(foreach LIB, $(LIB_DIR), \
-		cp $(SCRIPTS_DIR)/MakefileLib $(LIB)/Makefile; \
+		cp $(MAKEFILE) $(LIB)/Makefile; \
 		$(MAKE) -C $(LIB); \
 		$(RM) $(LIB)/Makefile; \
 		echo; \
@@ -44,7 +50,7 @@ rbuild:
 clean:
 	@echo
 	@$(foreach LIB, $(LIB_DIR), \
-		cp $(SCRIPTS_DIR)/MakefileLib $(LIB)/Makefile; \
+		cp $(MAKEFILE) $(LIB)/Makefile; \
 		$(MAKE) -C $(LIB) clean; \
 		$(RM) $(LIB)/Makefile; \
 		echo; \

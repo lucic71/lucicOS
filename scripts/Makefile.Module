@@ -37,16 +37,12 @@ HFLAGS = -MMD
 LD = ld
 LDFLAGS = -relocatable -m elf_i386
 
-# INCFLAGS - include directories for each dependency. These dependencies
-# include module dependencies and the include directory inside the current 
-# module
+# Include directories
 
 INCFLAGS = $(foreach TMP, $(LIB_INC_DIR), -I$(TMP))
 INCFLAGS += $(foreach TMP, $(INC_DIR), -I$(TMP))
 
 .PHONY: all clean
-
-# all - Default rule for building the module object.
 
 all: $(MOD_OBJ) 
 
