@@ -27,15 +27,15 @@ OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Compiler settings
 
-CC = gcc
-CCFLAGS = -m32 -nostdlib -lgcc -nostdinc -fno-builtin -fno-stack-protector \
-		  -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CC = i686-elf-gcc
+CCFLAGS = -ffreestanding -mno-red-zone -c
+CCFLAGS += -Wall -Wextra -Werror -pedantic
 HFLAGS = -MMD 
 
 # Linker settings
 
-LD = ld
-LDFLAGS = -relocatable -m elf_i386
+LD = i686-elf-gcc
+LDFLAGS = -r -nostdlib -ffreestanding -lgcc
 
 # Include directories
 
@@ -47,10 +47,10 @@ INCFLAGS += $(foreach TMP, $(INC_DIR), -I$(TMP))
 all: $(MOD_OBJ) 
 
 $(MOD_OBJ): $(OBJ) | $(MOBJ_DIR)
-	$(LD) $(LDFLAGS) $(OBJ) -o $@ 
+	$(LD) $(OBJ) -o $@ $(LDFLAGS) 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CCFLAGS) $(HFLAGS) $(INCFLAGS) $< -o $@
+	$(CC) $< -o $@ $(CCFLAGS) $(HFLAGS) $(INCFLAGS) 
 
 $(OBJ_DIR) $(MOBJ_DIR):
 	mkdir -p $@

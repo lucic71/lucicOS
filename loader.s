@@ -1,43 +1,53 @@
-global loader
+.global loader
 
-; Entry point in the kernel.
+/* Entry point in the kernel. */
 
-extern kmain
+.extern kmain
 
-; GRUB will load the kernel only if it compiles with the multiboot spec.
-; The header must contain a magic number, a flag (which can be set to 0x00)
-; and the checksum (checksum = - (flag + magic_number))
+/*
+ * GRUB will load the kernel only if it compiles with the multiboot spec.
+ * The header must contain a magic number, a flag (which can be set to 0x00)
+ * and the checksum (checksum = - (flag + magic_number))
+ *
+ */
 
-MAGIC_NUMBER equ 0x1BADB002
-FLAGS        equ 0x00
-CHECKSUM     equ -(MAGIC_NUMBER + FLAGS)
+.set MAGIC_NUMBER, 0x1BADB002
+.set FLAGS,        0x00
+.set CHECKSUM,     -(MAGIC_NUMBER + FLAGS)
 
-; Put the header in multiboot section so that it is placed in the first 8Kib
-; of the executable.
+ /*
+  * Put the header in multiboot section so that it is placed in the first 8Kib
+  * of the executable.
+  *
+  */
 
-section .multiboot
-    align 4
+.section .multiboot
+    .align 4
 
-    dd MAGIC_NUMBER
-    dd FLAGS
-    dd CHECKSUM
+    .int MAGIC_NUMBER
+    .int FLAGS
+    .int CHECKSUM
 
-; Create a kstack so that the entry point in the kernel can be called.
+/* Create a kstack so that the entry point in the kernel can be called. */
 
-KSTACK_SIZE equ 4096
+.set KSTACK_SIZE, 4096
 
-section .bss
-    align 4
+.bss
+    .align 16
 
-    kstack resb KSTACK_SIZE
+    kstack: .skip KSTACK_SIZE
 
-; Set the stack and call kmain.
+/* Set the stack and call kmain. */
 
-section .text
+.text
 
 loader:
-    mov esp, kstack + KSTACK_SIZE
+
+    mov $kstack, %esp
+    add KSTACK_SIZE, %esp
+
     call kmain
+    cli
 
 .halt:
     jmp .halt

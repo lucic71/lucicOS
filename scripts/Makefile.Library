@@ -28,20 +28,15 @@ OBJ += $(ASM:$(ASM_DIR)/%.s=$(OBJ_DIR)/%.o)
 
 # Compiler settings.
 
-CC = gcc
-CCFLAGS = -m32 -fPIC -nostdlib -lgcc -nostdinc -fno-builtin -fno-stack-protector \
-		  -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CC = i686-elf-gcc
+CCFLAGS = -ffreestanding -mno-red-zone -c
+CCFLAGS += -Wall -Wextra -Werror -pedantic
 HFLAGS = -MMD 
 
 # Linker settings.
 
-LD = ld
-LDFLAGS = -relocatable -m elf_i386
-
-# Archiver
-
-AR = ar
-ARFLAGS = rcs
+LD = i686-elf-gcc
+LDFLAGS = -r -nostdlib -ffreestanding -lgcc
 
 # Include flags.
 
@@ -49,8 +44,8 @@ INCFLAGS := $(foreach TMP, $(INC_DIR), -I$(TMP))
 
 # Assembler and flags for assembler.
 
-AS = nasm
-ASFLAGS = -f elf32
+AS = i686-elf-as
+ASFLAGS = 
 
 .PHONY: all clean
 
@@ -59,13 +54,13 @@ ASFLAGS = -f elf32
 all: $(LIB_OBJ)
 
 $(LIB_OBJ): $(OBJ) | $(LOBJ_DIR)
-	$(LD) $(LDFLAGS) $(OBJ) -o $@
+	$(LD) $(OBJ) -o $@ $(LDFLAGS) 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CCFLAGS) $(HFLAGS) $(INCFLAGS) $< -o $@
+	$(CC) $< -o $@ $(CCFLAGS) $(HFLAGS) $(INCFLAGS)
 
 $(OBJ_DIR)/%.o: $(ASM_DIR)/%.s | $(OBJ_DIR)
-	$(AS) $(ASFLAGS) $< -o $@
+	$(AS) $< -o $@ $(ASFLAGS) 
 
 $(LOBJ_DIR) $(OBJ_DIR):
 	mkdir -p $@

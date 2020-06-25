@@ -9,19 +9,19 @@ CONFIG_DIR := config/
 
 # Compiler settings
 
-CC = gcc
-CCFLAGS = -m32 -nostdlib -nostdinc -fno-builtin -fno-stack-protector \
-		  -nostartfiles -nodefaultlibs -Wall -Wextra -Werror -c
+CC = i686-elf-gcc
+CCFLAGS = -ffreestanding -mno-red-zone -c
+CCFLAGS += -Wall -Wextra -Werror -pedantic
 
 # Linker settings
 
-LD = ld
-LDFLAGS = -T $(CONFIG_DIR)/link.ld -m elf_i386
+LD = i686-elf-gcc
+LDFLAGS = -T $(CONFIG_DIR)/link.ld -nostdlib -ffreestanding -lgcc
 
 # Assembler settings
 
-AS = nasm
-ASFLAGS = -f elf32
+AS = i686-elf-as
+ASFLAGS = 
 
 # Libraries directory. Normally I don't want to include the library headers
 # in kmain, but given the fact that in the module interfaces there are includes
@@ -59,8 +59,6 @@ LIBS = -lklib
 
 .PHONY: all clean module_all
 
-# Build 
-
 all: lib_all | module_all kernel.elf 
 
 # module_all - Recursively build all modules.
@@ -69,6 +67,8 @@ module_all:
 	@$(call print_banner, "Building modules")
 	@$(MAKE) -C $(MODULES_ROOT_DIR)
 	@echo
+
+# lib_all - Recursively build the library
 
 lib_all:
 	@$(call print_banner, "Building the library")
@@ -80,7 +80,7 @@ lib_all:
 
 kernel.elf: $(OBJ)
 	@$(call print_banner, "Building the kernel")
-	$(LD) $(LDFLAGS) $(OBJ) $(MODULE_OBJ) -o kernel.elf $(LIBFLAGS) $(LIBS) 
+	$(LD) $(OBJ) $(MODULE_OBJ) -o kernel.elf $(LIBFLAGS) $(LIBS) $(LDFLAGS) 
 
 # os.iso - Create the OS image and place the kernel fiel in GRUB directory.
 
@@ -104,16 +104,14 @@ BOCHS_CONFIG := $(CONFIG_DIR)/bochsrc.txt
 run: os.iso
 	bochs -f $(BOCHS_CONFIG) -q
 
-# Compile and assemble c and s files.
-
 %.o: %.c
-	$(CC) $(CCFLAGS) $(INCFLAGS) $< -o $@
+	$(CC) $< -o $@ $(CCFLAGS) $(INCFLAGS) 
 
 %.o: %.s
-	$(AS) $(ASFLAGS) $< -o $@
+	$(AS) $< -o $@ $(ASFLAGS) 
 
 clean: mclean lclean
-	@$(call print_banner, "Cealning root directory")
+	@$(call print_banner, "Cleaning root directory")
 	@$(RM) *.o kernel.elf os.iso bochslog.txt iso/boot/kernel.elf
 
 mclean:

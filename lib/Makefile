@@ -24,7 +24,7 @@ SO := libklib.a
 
 # Archiver
 
-AR = ar
+AR = i686-elf-ar
 ARFLAGS = rcs
 
 # Makefile for each library
