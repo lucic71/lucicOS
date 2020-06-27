@@ -1,4 +1,4 @@
-.global loader
+.global _start
 
 /* Entry point in the kernel. */
 
@@ -41,10 +41,10 @@
 
 .text
 
-loader:
+_start:
 
     mov $kstack, %esp
-    add KSTACK_SIZE, %esp
+    add $KSTACK_SIZE, %esp
 
     call kmain
     cli
