@@ -1,4 +1,4 @@
-#include "vga.h"
+#include "lib/vga.h"
 
 uint8_t vga_entry_color(enum vga_color fg, enum vga_color bg) {
 

@@ -2,7 +2,7 @@
 #include "ports.h"
 #include "commands.h"
 
-#include "memio.h"
+#include "lib/memio.h"
 
 int serial_is_transmit_fifo_empty(uint16_t com) {
 

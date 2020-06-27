@@ -1,58 +1,47 @@
-# Stand-alone directories present in lib/.
-
-SO_DIR := so/
-INC_DIR := include/
-
-# Upper directories
-
-ROOT_DIR := ../
-SCRIPTS_DIR = $(ROOT_DIR)/scripts/
+PUBLIC_LIBRARY_DIR := so/
+INCLUDE_DIR := include/
 
 # Directories containing actual code for libraries.
 
-LIB_DIR = $(wildcard */)
-LIB_DIR := $(filter-out $(SO_DIR), $(LIB_DIR))
-LIB_DIR := $(filter-out $(INC_DIR), $(LIB_DIR))
+LIBRARY_DIRS = $(wildcard */)
+LIBRARY_DIRS := $(filter-out $(PUBLIC_LIBRARY_DIR), $(LIBRARY_DIRS))
+LIBRARY_DIRS := $(filter-out $(INCLUDE_DIR), $(LIBRARY_DIRS))
 
 # Library objects.
 
-LIB_OBJ = $(foreach TMP, $(LIB_DIR), $(wildcard $(TMP)/lobj/*))
+LIBRARY_OBJS = $(foreach TMP, $(LIBRARY_DIRS), $(wildcard $(TMP)lobj/*))
 
 # Name of the resulted shared object.
 
 SO := libklib.a
 
-# Archiver
+# Archiver flags
 
-AR = i686-elf-ar
 ARFLAGS = rcs
 
 # Makefile for each library
 
-MAKEFILE = $(SCRIPTS_DIR)/Makefile.Library
+MAKEFILE = Makefile.Library
 
-all: rbuild
-	$(AR) $(ARFLAGS) $(SO_DIR)/$(SO) $(LIB_OBJ)
+all: lib_build
+	mkdir -p $(PUBLIC_LIBRARY_DIR)
+	$(AR) $(ARFLAGS) $(PUBLIC_LIBRARY_DIR)$(SO) $(LIBRARY_OBJS)
 
-# Build all libraries recursively.
-
-rbuild:
+lib_build:
 	@echo
-	@$(foreach LIB, $(LIB_DIR), \
+	@$(foreach LIB, $(LIBRARY_DIRS), \
 		cp $(MAKEFILE) $(LIB)/Makefile; \
 		$(MAKE) -C $(LIB); \
 		$(RM) $(LIB)/Makefile; \
 		echo; \
 	)
 
-# Clean all libraries recursively.
-
 clean:
 	@echo
-	@$(foreach LIB, $(LIB_DIR), \
+	@$(foreach LIB, $(LIBRARY_DIRS), \
 		cp $(MAKEFILE) $(LIB)/Makefile; \
 		$(MAKE) -C $(LIB) clean; \
 		$(RM) $(LIB)/Makefile; \
 		echo; \
 	)
-	@$(RM) -rv $(SO_DIR)/$(SO)
+	@$(RM) -rv $(PUBLIC_LIBRARY_DIR)

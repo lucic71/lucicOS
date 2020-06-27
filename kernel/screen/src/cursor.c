@@ -1,7 +1,7 @@
 #include "cursor.h"
 
-#include "memio.h"
-#include "vga.h"
+#include "lib/memio.h"
+#include "lib/vga.h"
 
 /*
  * screen_move_cursor:

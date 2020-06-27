@@ -2,7 +2,7 @@
 #include "ports.h"
 #include "commands.h"
 
-#include "memio.h"
+#include "lib/memio.h"
 
 /*
  * serial_config_baud_rate:

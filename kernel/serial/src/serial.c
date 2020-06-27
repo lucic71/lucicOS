@@ -1,10 +1,10 @@
-#include "serial.h"
+#include "kernel/serial.h"
 
 #include "config.h"
 #include "status.h"
 #include "ports.h"
 
-#include "memio.h"
+#include "lib/memio.h"
 
 /* Private functions declaration. */
 

@@ -1,10 +1,10 @@
-#include "screen.h"
+#include "kernel/screen.h"
 
 #include "framebuffer.h"
 #include "cursor.h"
 
-#include "vga.h"
-#include "memio.h"
+#include "lib/vga.h"
+#include "lib/memio.h"
 
 /*
  * Variables that determine the state of the screen.
