@@ -28,24 +28,16 @@ OBJ += $(ASM:$(ASM_DIR)/%.s=$(OBJ_DIR)/%.o)
 
 # Compiler settings.
 
-CC = i686-elf-gcc
-CCFLAGS = -ffreestanding -mno-red-zone -c
-CCFLAGS += -Wall -Wextra -Werror -pedantic
+CFLAGS+=-c
 HFLAGS = -MMD 
 
 # Linker settings.
 
-LD = i686-elf-gcc
 LDFLAGS = -r -nostdlib -ffreestanding -lgcc
 
 # Include flags.
 
 INCFLAGS := $(foreach TMP, $(INC_DIR), -I$(TMP))
-
-# Assembler and flags for assembler.
-
-AS = i686-elf-as
-ASFLAGS = 
 
 .PHONY: all clean
 
@@ -54,13 +46,13 @@ ASFLAGS =
 all: $(LIB_OBJ)
 
 $(LIB_OBJ): $(OBJ) | $(LOBJ_DIR)
-	$(LD) $(OBJ) -o $@ $(LDFLAGS) 
+	$(CC) $(OBJ) -o $@ $(LDFLAGS) 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $< -o $@ $(CCFLAGS) $(HFLAGS) $(INCFLAGS)
+	$(CC) $< -o $@ $(CFLAGS) $(HFLAGS) $(INCFLAGS)
 
 $(OBJ_DIR)/%.o: $(ASM_DIR)/%.s | $(OBJ_DIR)
-	$(AS) $< -o $@ $(ASFLAGS) 
+	$(CC) $< -o $@ $(CFLAGS) $(HFLAGS) $(INCFLAGS)
 
 $(LOBJ_DIR) $(OBJ_DIR):
 	mkdir -p $@
