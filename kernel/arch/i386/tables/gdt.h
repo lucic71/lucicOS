@@ -69,7 +69,6 @@
  *
  */
 
-
 #define GDT_ENTRY(base, limit, options) \
     (limit & 0x0000FFFF)          | (base << 16)                  | \
     ((((base >> 16) & 0x000000FF) | ((options << 8) & 0x00F0FF00) | \

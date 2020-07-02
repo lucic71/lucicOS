@@ -1,5 +1,5 @@
-#include "gdt.h"
-#include "a20.h"
+#include "tables/gdt.h"
+#include "tables/a20.h"
 
 .global _start
 

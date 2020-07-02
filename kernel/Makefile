@@ -25,7 +25,7 @@ CFLAGS:=$(CFLAGS) -ffreestanding -D__is_kernel -Iinclude -Wall -Wextra -Werror
 CPPFLAGS:=$(CPPFLAGS) 
 LDFLAGS:=$(LDFLAGS)
 LIB_INCLUDE_FLAGS=-L./lib/so
-LIBS:=$(LIBS) -nostdlib -lgcc -lklib #-lk -lgcc
+LIBS:=$(LIBS) -nostdlib -lgcc -lklib -lk
 
 # Current architecture directory
 
@@ -37,6 +37,7 @@ include $(ARCHDIR)/make.config
 
 # Updated compiler flags with architecture settings added
 
+CFLAGS+=-I$(KERNEL_ARCH_INCLUDE)
 CFLAGS:=$(CFLAGS) $(KERNEL_ARCH_CFLAGS)
 CPPFLAGS:=$(CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
 LDFLAGS:=$(LDFLAGS) $(KERNEL_ARCH_LDFLAGS)
