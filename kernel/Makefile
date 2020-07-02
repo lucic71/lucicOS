@@ -6,7 +6,7 @@ HOSTARCH!=../target-triplet-to-arch.sh $(HOST)
 
 # Compiler and linker flags.
 
-CFLAGS?=-g3
+CFLAGS?=-g
 CPPFLAGS?=
 LDFLAGS?=
 LIBS?=
@@ -126,7 +126,7 @@ $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 	$(CC) -MD -c $< -o $@ $(CFLAGS) $(CPPFLAGS)
 
 clean: library_clean module_clean
-	rm -f os.kernel
+	rm -f os.kernel*
 	rm -f $(OBJS) *.o */*.o */*/*.o
 	rm -f $(OBJS:.o=.d) *.d */*.d */*/*.d
 
