@@ -37,7 +37,7 @@ include $(ARCHDIR)/make.config
 
 # Updated compiler flags with architecture settings added
 
-CFLAGS+=-I$(KERNEL_ARCH_INCLUDE)
+CFLAGS+=$(foreach INC, $(KERNEL_ARCH_INCLUDE), -I$(INC))
 CFLAGS:=$(CFLAGS) $(KERNEL_ARCH_CFLAGS)
 CPPFLAGS:=$(CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
 LDFLAGS:=$(LDFLAGS) $(KERNEL_ARCH_LDFLAGS)

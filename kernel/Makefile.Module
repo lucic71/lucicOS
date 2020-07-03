@@ -3,7 +3,7 @@
 SRC_DIR := src
 OBJ_DIR := obj
 ASM_DIR := asm
-INCLUDE_DIRS := ../include ./include
+INCLUDE_DIRS := ../include ./include ../arch/i386/include
 
 # MOD_OBJ - Module Object. Its name will be the same as the module so it is
 # a good idea to automate that.

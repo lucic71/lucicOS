@@ -1,5 +1,5 @@
-#include "tables/gdt.h"
-#include "tables/a20.h"
+#include "i386/gdt.h"
+#include "i386/a20.h"
 
 .global _start
 
@@ -183,7 +183,6 @@ kentry:
      */
 
     call kmain
-    cli
 
 .halt:
     jmp .halt
