@@ -1,6 +1,4 @@
-#include "idt.h"
-
-#include "types/idt_types.h"
+#include "i386/idt.h"
 
 /* Data structures used to fill the IDT. */
 

@@ -1,13 +1,9 @@
-#ifndef INTRPT_IDT_H_
-#define INTRPT_IDT_H_
+#ifndef INTRPT_H_
+#define INTRPT_H_
 
-#include "stdint.h"
+#include <stdint.h>
 
-/*
- * idt_entry_t  - entry in Interrupt Descriptor Table
- * idt_set_gate - creates an IDT entry
- *
- */
+/* idt_entry_t  - entry in Interrupt Descriptor Table */
 
 struct idt_entry_struct {
 
@@ -21,6 +17,15 @@ struct idt_entry_struct {
 
 typedef struct idt_entry_struct idt_entry_t;
 
+/*
+ * idt_set_gate:
+ *  Creates an IDT entry
+ *
+ * @oaram base - Base of the IDT entry
+ * @param sel  - Segment selector
+ * @param flags - Flags
+ *
+ */
 
 static inline idt_entry_t idt_set_gate(uint32_t base, uint16_t sel, uint8_t flags) {
 
@@ -35,6 +40,7 @@ static inline idt_entry_t idt_set_gate(uint32_t base, uint16_t sel, uint8_t flag
     return entry;
 }
 
+
 /* idt_ptr_t - IDT pointer that will be loaded in CPU */
 
 struct idt_ptr_struct {
@@ -45,5 +51,14 @@ struct idt_ptr_struct {
 } __attribute__((packed));
 
 typedef struct idt_ptr_struct idt_ptr_t;
+
+/*
+ * idt_init:
+ *  Creates an array of 256 empty entries that will be loaded in the CPU as
+ *  an IDT.
+ *
+ */
+
+void idt_init(void);
 
 #endif
