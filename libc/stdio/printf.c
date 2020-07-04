@@ -3,8 +3,9 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <digits.h>
 
-static bool print(const char* data, size_t length) {
+static bool _print(const char* data, size_t length) {
 
 	const unsigned char* bytes = (const unsigned char*) data;
 
@@ -13,6 +14,67 @@ static bool print(const char* data, size_t length) {
 			return false;
 
 	return true;
+
+}
+
+/*
+ * _int_to_string:
+ * ---------------
+ *
+ *  Because there is no heap at the moment, a reference to a char array
+ *  must be passed to store the result.
+ *
+ *  The routine checks if the number is signed, and sets the first character
+ *  of the result string to '-' if so. Else it produces a normal conversion.
+ *
+ *  It has two special cases: when n is 0 and when n is INT_MIN.
+ *
+ * @param n - Number to be converted
+ * @param result - Pointer to a result char array
+ *
+ */
+
+static void _int_to_string(int n, char **result) {
+
+    if (!n) {
+
+        (*result)[0] = '0';
+        return;
+
+    }
+
+    if (n == INT_MIN) {
+
+        char int_min_str[] = "-2147483648";
+        memcpy(*result, int_min_str, strlen(int_min_str));
+
+        return;
+
+    }
+
+    int digits = 0;
+    int stop_at = 0;
+
+    if (n >> 31) {
+
+        n = ~n + 1;
+        for (int temp = n; temp != 0; temp /= 10, digits++);
+
+        (*result)[0] = '-';
+        digits++;
+
+        stop_at = 1;
+
+    } else
+
+        for(int temp = n; temp != 0; temp /= 10, digits++);
+
+    for (int i = digits - 1, temp = n; i >= stop_at; i--) {
+
+        (*result)[i] = (temp % 10) + '0';
+        temp /= 10;
+
+    }
 
 }
 
@@ -42,7 +104,7 @@ int printf(const char* restrict format, ...) {
 				return -1;
 			}
 
-			if (!print(format, amount))
+			if (!_print(format, amount))
 				return -1;
 
 			format += amount;
@@ -63,7 +125,7 @@ int printf(const char* restrict format, ...) {
 				return -1;
 			}
 
-			if (!print(&c, sizeof(c)))
+			if (!_print(&c, sizeof(c)))
 				return -1;
 
 			written++;
@@ -79,12 +141,33 @@ int printf(const char* restrict format, ...) {
 				return -1;
 			}
 
-			if (!print(str, len))
+			if (!_print(str, len))
 				return -1;
 
 			written += len;
 
-		} else {
+		} else if (*format == 'd') {
+
+            format++;
+            int n = va_arg(parameters, int);
+
+            char str[INT32_MAX_DIGITS + 1] = {0};
+            char *str_ptr = str;
+
+            _int_to_string(n, &str_ptr);
+            size_t len = strlen(str);
+
+			if (maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+
+			if (!_print(str, len))
+				return -1;
+
+			written += len;
+            
+        } else {
 
 			format = format_begun_at;
 			size_t len = strlen(format);
@@ -94,7 +177,7 @@ int printf(const char* restrict format, ...) {
 				return -1;
 			}
 
-			if (!print(format, len))
+			if (!_print(format, len))
 				return -1;
 
 			written += len;
@@ -106,5 +189,4 @@ int printf(const char* restrict format, ...) {
 
 	va_end(parameters);
 	return written;
-
 }
