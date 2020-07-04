@@ -1,6 +1,6 @@
 # lucicOS
 
-![OS logo] (logo.png)
+![OS logo](logo.png)
 
 lucicOS is an educational, UNIX-like operating system built from scratch using
 the following resources:
