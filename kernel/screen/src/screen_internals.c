@@ -38,7 +38,7 @@ void _screen_scroll_up(void) {
         fbuffer[i] = fbuffer[i + 80];
 
     for (i = 0; i < VGA_WIDTH; i++)
-        fbuffer[(VGA_HEIGHT - 1) * VGA_WIDTH + 1] = vga_entry(' ', screen_color);
+        fbuffer[(VGA_HEIGHT - 1) * VGA_WIDTH + i] = vga_entry(' ', screen_color);
 
 }
 
@@ -68,8 +68,12 @@ void _screen_putchar(char c) {
 
     }
 
-    if (c == '\n')
+    if (c == '\n') {
+
+        _screen_move_cursor(screen_column, screen_row);
         return;
+
+    }
 
     _screen_putchar_at(c, screen_color, screen_column++, screen_row);
     _screen_move_cursor(screen_column, screen_row);
