@@ -4,7 +4,7 @@
 #include "lib/vga.h"
 
 /*
- * screen_move_cursor:
+ * _screen_move_cursor:
  * -------------------
  *
  *  Compute the screen index, @sindex, using the given coordinates and send
@@ -16,7 +16,7 @@
  *
  */
 
-void screen_move_cursor(uint8_t x, uint8_t y) {
+void _screen_move_cursor(uint8_t x, uint8_t y) {
 
     uint16_t sindex = y * VGA_WIDTH + x;
 

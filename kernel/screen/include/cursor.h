@@ -14,7 +14,7 @@
 #define CURSOR_LOW_BYTE_COMMAND  0x0F
 
 /*
- * screen_move_cursor:
+ * _screen_move_cursor:
  *  Moves the cursor of the framebuffer to a give position calculated using
  *  @x and @y coordinates.
  *
@@ -23,6 +23,6 @@
  *
  */
 
-void screen_move_cursor(uint8_t x, uint8_t y);
+void _screen_move_cursor(uint8_t x, uint8_t y);
 
 #endif
