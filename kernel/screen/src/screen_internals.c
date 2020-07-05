@@ -64,6 +64,11 @@ void _screen_scroll_up(void) {
  *  Wrapper function over _screen_putchar_at. Puts the character in framebuffer and
  *  has support for newline characters.
  *
+ *  If the routine writes to the last position of a line then the cursor will be
+ *  moved on the first position of the following line. If the routine writes to
+ *  the last column of the last line the screen will be scrolled and the cursor
+ *  will be put on the next free line.
+ *
  *  Side efects:
  *   scrolls up the screen whenever there is no more space
  *   moves the cursor after each displayed characte
@@ -71,6 +76,18 @@ void _screen_scroll_up(void) {
  */
 
 void _screen_putchar(char c) {
+
+    if (screen_column == VGA_WIDTH - 1 && screen_row == VGA_HEIGHT - 1) {
+
+        _screen_putchar_at(c, screen_color, screen_column, screen_row);
+        _screen_scroll_up();
+
+        screen_column = 0;
+        _screen_move_cursor(screen_column, screen_row);
+
+        return;
+
+    }
 
     if (screen_column == VGA_WIDTH || c == '\n') {
         
