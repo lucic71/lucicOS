@@ -15,14 +15,14 @@
 
 /*
  * _screen_move_cursor:
- *  Moves the cursor of the framebuffer to a give position calculated using
- *  @x and @y coordinates.
+ *  Moves the cursor of the framebuffer to a given position calculated using
+ *  the arguments.
  *
- * @param x - horizontal position
- * @param y - vertical position
+ * @param column - Vertical position
+ * @param row    - Horizontal position
  *
  */
 
-void _screen_move_cursor(uint8_t x, uint8_t y);
+void _screen_move_cursor(uint8_t column, uint8_t row);
 
 #endif

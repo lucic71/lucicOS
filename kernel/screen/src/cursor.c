@@ -16,9 +16,9 @@
  *
  */
 
-void _screen_move_cursor(uint8_t x, uint8_t y) {
+void _screen_move_cursor(uint8_t column, uint8_t row) {
 
-    uint16_t sindex = y * VGA_WIDTH + x;
+    uint16_t sindex = row * VGA_WIDTH + column;
 
     outb(CURSOR_COMMAND_PORT, CURSOR_HIGH_BYTE_COMMAND);
     outb(CURSOR_DATA_PORT, ((sindex >> 8)) & 0x00FF);

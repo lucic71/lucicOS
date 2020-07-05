@@ -2,6 +2,7 @@
 
 #include "framebuffer.h"
 #include "screen_internals.h"
+#include "cursor.h"
 
 #include "lib/vga.h"
 
@@ -25,14 +26,9 @@ void screen_init(void) {
 
     fbuffer = (uint16_t *) FBUFFER_START_ADDR;
 
-    for (size_t y = 0; y < VGA_HEIGHT; y++) {
-        for (size_t x = 0; x < VGA_WIDTH; x++) {
-
-            const size_t index = y * VGA_WIDTH + x;
-            fbuffer[index] = vga_entry(' ', screen_color);
-
-        }
-    }
+    for (size_t row = 0; row < VGA_HEIGHT; row++)
+        for (size_t column = 0; column < VGA_WIDTH; column++) 
+            _screen_delete_at(column, row);
 
 }
 
@@ -52,5 +48,37 @@ size_t screen_write(char *buf, size_t len) {
         _screen_putchar(buf[i]);
 
     return i;
+}
+
+/*
+ * screen_delete:
+ * --------------
+ *
+ *  Deletes the current character and updates the cursor. If current position
+ *  is (0, 0) then do nothing. If current position is at the beginning of a
+ *  line then find the last nonwhite element on the last line and move the
+ *  cursor there. Else just delete the current element.
+ *
+ *  Side effects:
+ *   cursor position will be affected too.
+ *
+ */
+
+void screen_delete(void) {
+
+    if (!screen_column && !screen_row)
+        return;
+
+    if (!screen_column && screen_row) {
+
+        screen_column = _find_last_nonwhite_column();
+        screen_row--;
+
+    } else
+        screen_column--;
+
+    _screen_delete_at(screen_column, screen_row);
+    _screen_move_cursor(screen_column, screen_row);
+
 }
 
