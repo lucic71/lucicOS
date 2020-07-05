@@ -24,4 +24,12 @@ void screen_init(void);
 
 size_t screen_write(char *buf, size_t len);
 
+/*
+ * screen_delete:
+ *  Deletes the current character and updates the position of the cursor.
+ *
+ */
+
+void screen_delete(void);
+
 #endif
