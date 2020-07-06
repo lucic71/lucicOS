@@ -78,6 +78,53 @@ static void _int_to_string(int n, char **result) {
 
 }
 
+/*
+ * _int_to_hex:
+ * ------------
+ *
+ *  Divide by 16 until n is 0, put the remainder in result and at the end
+ *  reverse the result string to have the correct hexadecimal number. If
+ *  n is 0 simply put the char '0' in result and return.
+ *
+ *  A conversion to unsigned is needed because the routine must also handle
+ *  negative numbers.
+ *
+ *
+ */
+
+static void _int_to_hex(int n, char **result) {
+
+    if (!n) {
+
+        (*result)[0] = '0';
+        return;
+
+    }
+
+    unsigned int un = n;
+
+    for (int i = 0; un != 0; un = un / 0x10, i++) {
+
+        unsigned char rem = un % 0x10;
+
+        if (rem < 10)
+            (*result)[i] = rem + 48;
+        else
+            (*result)[i] = rem + 55;
+
+    }
+
+    int result_sz = strlen(*result);
+    for (int i = 0, k = result_sz - 1; i < (result_sz / 2); i++, k--) {
+
+        int temp = (*result)[k];
+        (*result)[k] = (*result)[i];
+        (*result)[i] = temp;
+
+    }
+
+}
+
 int printf(const char* restrict format, ...) {
 
 	va_list parameters;
@@ -167,6 +214,27 @@ int printf(const char* restrict format, ...) {
 
 			written += len;
             
+        } else if (*format == 'x') {
+
+            format++;
+            int n = va_arg(parameters, int);
+
+            char str[INT32_MAX_HEX_DIGITS + 1] = {};
+            char *str_ptr = str;
+
+            _int_to_hex(n, &str_ptr);
+            size_t len = strlen(str);
+
+			if (maxrem < len) {
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+
+			if (!_print(str, len))
+				return -1;
+
+			written += len;
+
         } else {
 
 			format = format_begun_at;
