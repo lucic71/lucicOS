@@ -21,7 +21,7 @@ INCLUDEDIR?=$(PREFIX)/include
 
 # Updated compiler flags
 
-CFLAGS:=$(CFLAGS) -ffreestanding -D__is_kernel -Iinclude -Wall -Wextra -Werror
+CFLAGS:=$(CFLAGS) -ffreestanding -D__is_kernel -Iinclude -Wall -Wextra -Werror 
 CPPFLAGS:=$(CPPFLAGS) 
 LDFLAGS:=$(LDFLAGS)
 LIB_INCLUDE_FLAGS=-L./lib/so
@@ -114,7 +114,7 @@ library_clean:
 
 os.kernel: library_all module_all $(OBJS) $(ARCHDIR)/linker.ld
 	$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST) $(MODULE_OBJS) \
-		$(LIB_INCLUDE_FLAGS) $(LIBS)
+		$(LIB_INCLUDE_FLAGS) $(LIBS) 
 	grub-file --is-x86-multiboot os.kernel
 
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:

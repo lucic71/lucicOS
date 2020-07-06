@@ -28,6 +28,10 @@ OBJ += $(ASM:$(ASM_DIR)/%.S=$(OBJ_DIR)/%.o)
 HFLAGS = -MMD 
 CFLAGS+=-c
 
+# Linker settings.
+
+LDFLAGS = -r -nostdlib -ffreestanding -lgcc
+
 # Include directories
 
 INCFLAGS = $(foreach TMP, $(LIB_INCLUDE_DIRS), -I$(TMP))
@@ -37,8 +41,8 @@ INCFLAGS += $(foreach TMP, $(INCLUDE_DIRS), -I$(TMP))
 
 all: $(MOD_OBJ) 
 
-$(MOD_OBJ): $(OBJ) | $(MOBJ_DIR)
-	$(AR) rcs $@ $(OBJ) 
+$(MOD_OBJ): $(OBJ) 
+	$(CC) $(OBJ) -o $@ $(LDFLAGS) 
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $< -o $@ $(CFLAGS) $(HFLAGS) $(INCFLAGS) 
@@ -46,10 +50,10 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(OBJ_DIR)/%.o: $(ASM_DIR)/%.S | $(OBJ_DIR)
 	$(CC) $< -o $@ $(CFLAGS) $(HFLAGS) $(INCFLAGS) 
 
-$(OBJ_DIR) $(MOBJ_DIR):
+$(OBJ_DIR):
 	mkdir -p $@
 
 clean:
-	@$(RM) -rv $(OBJ_DIR) $(MOBJ_DIR) 
+	@$(RM) -rv $(OBJ_DIR) 
 
 -include $(OBJ:.o=.d)
