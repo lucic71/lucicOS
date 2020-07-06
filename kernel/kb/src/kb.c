@@ -1,7 +1,9 @@
 #include "kernel/kb.h"
 #include "kernel/screen.h"
+#include "kernel/log.h"
 
 #include "kb_internals.h"
+#include "kb_shortcut.h"
 
 #include "i386/context.h"
 #include "i386/irq.h"
@@ -9,7 +11,6 @@
 #include "lib/memio.h"
 
 #include <stddef.h>
-#include <stdio.h>
 
 /*
  * kb_intrpt_handler:
@@ -18,6 +19,10 @@
  *  Using a current fetched scancode and a previous fetched scancode,
  *  update the keystate and convert a current scancode if its corresponding
  *  key has not yet been released.
+ *
+ *  Aftter the _is_sequence_released check, the routine checks if there is
+ *  and shortcut associated with the current scancode and keystate, if so
+ *  it executes it and returns.
  *
  *  It also supports special characters, ex: backspace.
  *
@@ -37,6 +42,9 @@ void kb_intrpt_handler(__attribute__ ((unused)) context_t context) {
 
     }
 
+    if (!_execute_shortcut(scancode, keystate))
+        return;
+
     uint8_t asciicode = _to_ascii(scancode);
 
     if (_is_backspace(scancode))
@@ -54,6 +62,7 @@ void kb_intrpt_handler(__attribute__ ((unused)) context_t context) {
  * --------
  *
  *  Fill the translation tables and register the keyboard interrupt.
+ *  Register shortcuts.
  *
  *  keycode and keyshift will be filled with the default value 0xFF. Later,
  *  keycode will be filled with the corresponding ascii codes for each
@@ -147,6 +156,9 @@ void kb_init(void) {
     keyshift[','] = '<';
     keyshift['.'] = '>';
     keyshift['/'] = '?';
+
+    _register_shortcut(SCANCODE_BACKSPACE, KEYSTATE_CTRL_PRESSED,
+            reg_dump, (void *) 0);
 
     register_irq(IRQ1, kb_intrpt_handler);
 

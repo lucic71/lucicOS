@@ -4,6 +4,7 @@
 #include "kernel/kb.h"
 #include "kb_tables.h"
 #include "kb_codes.h"
+#include "kb_shortcut.h"
 
 #include <stdint.h>
 #include <stddef.h>
@@ -19,10 +20,14 @@
 uint8_t keycode[KEYCODE_TABLE_SIZE];
 uint8_t keyshift[KEYCODE_TABLE_SIZE];
 
-/* TO BE IMPLEMENTED */
+/*
+ * kb_shortcut - Table containing shortcuts
+ * kb_shortcut_ptr - Index pointer to an available entry
+ *
+ */
 
-__attribute__ ((unused)) kb_shortcut_t kb_shortcut[SHORTCUT_TABLE_SIZE];
-__attribute__ ((unused)) size_t kb_shortcut_ptr;
+kb_shortcut_t kb_shortcut[SHORTCUT_TABLE_SIZE];
+size_t kb_shortcut_ptr;
 
 /*
  * keystate:
@@ -93,7 +98,11 @@ static inline int _is_pressed(uint8_t keystate) {
  *
  */
 
-static inline int _is_backspace(uint8_t scancode) { return scancode == 0x0E; }
+static inline int _is_backspace(uint8_t scancode) {
+
+    return scancode == SCANCODE_BACKSPACE;
+
+}
 
 /*
  * _is_sequence_released:
@@ -107,8 +116,9 @@ static inline int _is_backspace(uint8_t scancode) { return scancode == 0x0E; }
 static inline int _is_sequence_released(uint8_t scancode,
         uint8_t prev_scancode) {
     
-    return ((scancode & 0x80) && !(prev_scancode & 0x80) &&
-            ((scancode & 0x7F) == prev_scancode));
+    return
+        ((scancode & SCANCODE_RELEASED) && !(prev_scancode & SCANCODE_RELEASED)
+        && ((scancode & ~SCANCODE_RELEASED) == prev_scancode));
 
 }
 
