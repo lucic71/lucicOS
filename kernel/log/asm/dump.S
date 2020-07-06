@@ -1,15 +1,21 @@
 .global reg_dump
 .extern printf
 
-.text
+.text 
 
 /*
  * reg_dump:
- * ---------
+ * -------------
  *
  *  Save the context of caller in prev_* memory locations and print them.
  *
+ *  Registers must be saved before calling other routines because they may
+ *  change the registers.
+ * 
+ *  4 is added to prev_esp because current esp has the return address. eip
+ *  is fetched by dereferencing esp.
  */
+
 
 reg_dump:
 
@@ -43,13 +49,11 @@ reg_dump:
 
     add $0x08, %esp
 
-
     push prev_edx
     push $EDX_FMT
     call printf
 
     add $0x08, %esp
-
 
     push prev_ebx
     push $EBX_FMT
@@ -57,13 +61,11 @@ reg_dump:
 
     add $0x08, %esp
 
-
     push prev_esp
     push $ESP_FMT
     call printf
 
     add $0x08, %esp
-
 
     push prev_ebp
     push $EBP_FMT
@@ -71,13 +73,11 @@ reg_dump:
 
     add $0x08, %esp
 
-
     push prev_esi
     push $ESI_FMT
     call printf
 
     add $0x08, %esp
-
 
     push prev_edi
     push $EDI_FMT
@@ -119,4 +119,3 @@ reg_dump:
     prev_esi: .skip 4
     prev_edi: .skip 4
     prev_eip: .skip 4
-
