@@ -3,7 +3,10 @@
 #include "i386/idt.h"
 #include "i386/context.h"
 
+#include "kernel/serial.h"
+
 #include <stdio.h>
+#include <string.h>
 #include <stdint.h>
 
 /* Extern symbol defined in idt.c */
@@ -137,7 +140,9 @@ char *exception_messages[] = {
 
 void isr_handler(context_t context) {
 
-    printf("Unhandled exception: %s\n", exception_messages[context.int_no]);
+    serial_write(COM1, "Unhandled exception: ", strlen("Unhandled exception: "));
+    serial_write(COM1, exception_messages[context.int_no], strlen(exception_messages[context.int_no]));
+    serial_write(COM1, "\n", 1);
 
 }
 

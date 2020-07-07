@@ -37,6 +37,11 @@ reg_dump:
     push %ebp
     mov %esp, %ebp
 
+    push $NL_STR
+    call printf
+
+    add $0x04, %esp
+
     push prev_eax
     push $EAX_FMT
     call printf
@@ -98,6 +103,7 @@ reg_dump:
 
 .data
 
+    NL_STR: .string "\n"
     EAX_FMT: .string "eax: 0x%x\n"
     ECX_FMT: .string "ecx: 0x%x\n"
     EDX_FMT: .string "edx: 0x%x\n"

@@ -4,7 +4,10 @@
 #include "i386/idt.h"
 #include "i386/context.h"
 
+#include "kernel/serial.h"
+
 #include <stdio.h>
+#include <string.h>
 
 /* Extern symbol defined in idt.c */
 
@@ -92,7 +95,13 @@ void irq_handler(context_t context) {
     irq_t handler = intrpt_handlers[context.int_no];
     if (handler)
         handler(context);
-    else
-        puts("Unhandled interrupt");
+
+    else {
+
+        char unhandled_intrpt[] = "Unhandled interrupt request\n";
+        serial_write(COM1, unhandled_intrpt, strlen(unhandled_intrpt));
+
+    }
+
 
 }
