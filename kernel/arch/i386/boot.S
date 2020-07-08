@@ -42,14 +42,24 @@
 .bss
     .align 16
 
+    multiboot_hdr_ptr: .skip 4
+    multiboot_magic:   .skip 4
+
     kstack: .skip KSTACK_SIZE
 
 
-/* Set up GDT and the stack, after that kmain can be called. */
+/* 
+ * Set up GDT and the stack, after that kmain can be called with its corresponding
+ * multiboot arguments.
+ *
+ */
 
 .text
 
 _start:
+
+    mov %eax, multiboot_magic
+    mov %ebx, multiboot_hdr_ptr
 
     /* Use a jmp instead of call because there is no valid stack. */
 
@@ -72,6 +82,11 @@ kentry:
     /* Set ebp to 0 to start the backtrace in kmain. */
 
     xor %ebp, %ebp
+
+    /* kmain multiboot arguments. */
+
+    pushl multiboot_magic
+    pushl multiboot_hdr_ptr
 
     /*
      * Now that we are in protected mode and the stack is set up we cann call

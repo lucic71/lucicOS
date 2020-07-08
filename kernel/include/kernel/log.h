@@ -15,4 +15,14 @@
 
 void reg_dump(void *);
 
+/*
+ * panic:
+ *  Print a panic message and enter in infinite loop.
+ *
+ * @param panic_str - Panic message
+ *
+ */
+
+void panic(char *panic_str);
+
 #endif
