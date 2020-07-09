@@ -1,4 +1,5 @@
 #include "kernel/pmm.h"
+#include "kernel/multiboot.h"
 
 #include <stdio.h>
 #include <stdint.h>
@@ -25,6 +26,13 @@ static char *mem_types[] = {
  */
 
 void print_memory_map(multiboot_info_t *mb_info) {
+
+    if (!(mb_info->flags & MULTIBOOT_INFO_MEM_MAP)) {
+
+        puts("There is no info about memory map");
+        return;
+
+    }
 
     printf("Physical Memory Map:\n");
 
