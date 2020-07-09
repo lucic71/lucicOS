@@ -24,6 +24,8 @@ void kmain(multiboot_info_t *mb_info, uint32_t mb_magic) {
         panic("Not a multiboot bootloader!");
 
     print_memory_map(mb_info);
+    puts("");
+    print_kernel_map();
 
     serial_init(COM1);
 
