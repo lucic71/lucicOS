@@ -25,22 +25,9 @@ static char *mem_types[] = {
  *
  */
 
-void print_memory_map(multiboot_info_t *mb_info) {
-
-    if (!(mb_info->flags & MULTIBOOT_INFO_MEM_MAP)) {
-
-        puts("There is no info about memory map");
-        return;
-
-    }
+void print_memory_map(multiboot_memory_map_t *mmap, multiboot_memory_map_t *mmap_end) {
 
     printf("Physical Memory Map:\n");
-
-    multiboot_memory_map_t *mmap =
-        (multiboot_memory_map_t *) mb_info->mmap_addr;
-
-    multiboot_memory_map_t *mmap_end =
-        (multiboot_memory_map_t *) (mb_info->mmap_addr + mb_info->mmap_length);
 
     for (int i = 0; mmap < mmap_end; mmap++, i++) {
 

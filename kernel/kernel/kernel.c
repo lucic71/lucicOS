@@ -26,7 +26,12 @@ void kmain(multiboot_info_t *mb_info, uint32_t mb_magic) {
     if (!mb_info)
         panic("Invalid multiboot pointer");
 
-    print_memory_map(mb_info);
+    if (!(mb_info->flags & MULTIBOOT_INFO_MEMORY))
+        panic("There is no memory info in multiboot");
+
+    printf("mem_lower: 0x%x B, mem_upper: 0x%x B\n\n", mb_info->mem_lower * 1024, mb_info->mem_upper * 1024);
+    print_memory_map((multiboot_memory_map_t *) mb_info->mmap_addr,
+            (multiboot_memory_map_t *) (mb_info->mmap_addr + mb_info->mmap_length));
     puts("");
     print_kernel_map();
 
