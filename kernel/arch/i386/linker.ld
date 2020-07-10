@@ -43,6 +43,8 @@ SECTIONS {
     }
 
     _kernel_bss_end = .;
+
+    . = ALIGN(4K);
     _kernel_end = .;
 
     /DISCARD/ : {

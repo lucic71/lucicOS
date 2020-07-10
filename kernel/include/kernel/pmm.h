@@ -12,12 +12,12 @@
  * pmm_init:
  *  Initializes the Physical Memory Manager.
  *
- * @param size - Size of available physical memory
  * @param mmap_addr - Physical memory address of memory map data structure
+ * @param size      - Size of available physical memory in KB
  *
  */
 
-void pmm_init(size_t size, uint32_t mmap_addr);
+void pmm_init(uint32_t mmap_addr, size_t size);
 
 /*
  * pmm_init_region:
@@ -31,6 +31,19 @@ void pmm_init(size_t size, uint32_t mmap_addr);
 void pmm_init_region(uint32_t base, size_t size);
 
 /*
+ * pmm_init_available_regions:
+ * ---------------------------
+ *
+ *  Using multiboot info, initialize the available memory regions.
+ *
+ * @param mmap - Pointer to start of memory map info
+ * @param mmap_end - Pointe rto end of memory map info
+ *
+ */
+
+void pmm_init_available_regions(uint32_t mmap_, uint32_t mmap_end_);
+
+/*
  * pmm_deinit_region:
  *  Deinitializes a memory region of specified size.
  *
@@ -40,6 +53,16 @@ void pmm_init_region(uint32_t base, size_t size);
  */
 
 void pmm_deinit_region(uint32_t base, size_t size);
+
+/*
+ * pmm_deinit_kernel:
+ *  Deinitializes the memory where the kernel and the memory map data
+ *  structure stay. It assumes that the memory map is placed after
+ *  the end of kernel.
+ *
+ */
+
+void pmm_deinit_kernel(void);
 
 /*
  * pmm_alloc_block:
@@ -54,6 +77,8 @@ void *pmm_alloc_block(void);
  * pmm_free_block:
  *  Frees a memory block.
  *
+ * @param p - Pointer to be free'd
+ *
  */
 
 void pmm_free_block(void *p);
@@ -67,7 +92,7 @@ void pmm_free_block(void *p);
  *
  */
 
-void print_memory_map(multiboot_memory_map_t *mmap, multiboot_memory_map_t *mmap_end);
+void print_memory_map(uint32_t mmap_, uint32_t mmap_end_);
 
 /*
  * print_ksections

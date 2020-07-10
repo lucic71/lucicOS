@@ -25,7 +25,10 @@ static char *mem_types[] = {
  *
  */
 
-void print_memory_map(multiboot_memory_map_t *mmap, multiboot_memory_map_t *mmap_end) {
+void print_memory_map(uint32_t mmap_, uint32_t mmap_end_) {
+
+    multiboot_memory_map_t *mmap = (multiboot_memory_map_t *) mmap_;
+    multiboot_memory_map_t *mmap_end = (multiboot_memory_map_t *) mmap_end_;
 
     printf("Physical Memory Map:\n");
 
