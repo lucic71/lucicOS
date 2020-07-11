@@ -4,6 +4,7 @@
 #include "i386/context.h"
 
 #include "kernel/serial.h"
+#include "kernel/log.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -131,8 +132,7 @@ char *exception_messages[] = {
 };
 
 /* isr_handler:
- *  Handles an incomming request by calling the appropiate handler or printing
- *  an exception message.
+ *  Handles an incomming request by calling the appropiate handler or panicking.
  *
  *  @param context - the context of the caller
  *
@@ -140,9 +140,7 @@ char *exception_messages[] = {
 
 void isr_handler(context_t context) {
 
-    serial_write(COM1, "Unhandled exception: ", strlen("Unhandled exception: "));
-    serial_write(COM1, exception_messages[context.int_no], strlen(exception_messages[context.int_no]));
-    serial_write(COM1, "\n", 1);
+    panic(exception_messages[context.int_no]);
 
 }
 
