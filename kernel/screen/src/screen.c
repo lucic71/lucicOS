@@ -82,3 +82,19 @@ void screen_delete(void) {
 
 }
 
+/*
+ * screen_delete_line:
+ * -------------------
+ *
+ *  Repeat screen_delete until the whole line is deleted.
+ *
+ */
+
+void screen_delete_line(void) {
+
+    while (screen_column)
+        screen_delete();
+
+}
+
+

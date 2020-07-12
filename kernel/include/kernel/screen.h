@@ -32,4 +32,14 @@ size_t screen_write(char *buf, size_t len);
 
 void screen_delete(void);
 
+/*
+ * screen_delete_line:
+ *  Deletes current line and updates the position of the cursor. The cursor
+ *  will be placed at the beginning of the current line after this routine
+ *  ends.
+ *
+ */
+
+void screen_delete_line(void);
+
 #endif
