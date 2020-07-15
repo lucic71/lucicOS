@@ -12,12 +12,12 @@
  * pmm_init:
  *  Initializes the Physical Memory Manager.
  *
- * @param mmap_addr - Physical memory address of memory map data structure
- * @param size      - Size of available physical memory in KB
+ * @param pmmap_addr - Physical memory address of memory map data structure
+ * @param size       - Size of available physical memory in KB
  *
  */
 
-void pmm_init(uint32_t mmap_addr, size_t size);
+void pmm_init(uint32_t pmmap_addr, size_t size);
 
 /*
  * pmm_init_region:
