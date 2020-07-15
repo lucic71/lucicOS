@@ -10,6 +10,10 @@
 #define IS_ALIGNED(addr, align) !((addr) & ~((align) - 1))
 #define ALIGN(addr, align) (((addr) & ~((align) - 1)) + (align))
 
+/* Macros for converting between units of measure. */
+
+#define KB_TO_BLOCKS(x) (((x) * 1024) / BLOCK_SIZE)
+
 /*
  * Internal variables:
  *
