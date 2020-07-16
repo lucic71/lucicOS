@@ -37,18 +37,18 @@ For building, running and testing, I use the following tools:
 At this moment there is still a lot of work to do in order to call this a real
 Operating System. 
 These are some features that I managed to understand and implement:
-    * VGA (writing on screen)
-    * Serial (writing on serial ports)
-    * Keyboard (reading characters/shortcuts from keyboard)
-    * Timer (Receiving data from Programmable Interval Timer)
-    * Physical and Virtual Memory Mangers
-    * Interrupt request and Interrupt Service Routines
-    * Global Descriptor Table and Protected Mode
+  * VGA (writing on screen)
+  * Serial (writing on serial ports)
+  * Keyboard (reading characters/shortcuts from keyboard)
+  * Timer (Receiving data from Programmable Interval Timer)
+  * Physical and Virtual Memory Mangers
+  * Interrupt request and Interrupt Service Routines
+  * Global Descriptor Table and Protected Mode
 
 What I am currently working at:
-    * Moving the kernel in the Higher Half
-    * Writing a consistent Page Allocator
-    * Making a tutorial out of this project
+  * Moving the kernel in the Higher Half
+  * Writing a consistent Page Allocator
+  * Making a tutorial out of this project
 
 ## License
 
