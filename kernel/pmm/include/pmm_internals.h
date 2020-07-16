@@ -1,9 +1,9 @@
 #ifndef PMM_INTERNALS_H_
 #define PMM_INTERNALS_H_
 
-#define BLOCKS_PER_BYTE 8
-#define BLOCK_SIZE      4096
-#define BLOCK_ALIGN     BLOCK_SIZE
+#define BLOCKS_PER_DWORD 32
+#define BLOCK_SIZE       4096
+#define BLOCK_ALIGN      BLOCK_SIZE
 
 /* Macros for testing and aligning memory. */
 

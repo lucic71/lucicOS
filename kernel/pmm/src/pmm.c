@@ -24,8 +24,8 @@ void pmm_init(uint32_t pmmap_addr, size_t size) {
     used_blocks = max_blocks;
     pmmap       = (uint32_t *) pmmap_addr;
 
-    pmmap_size = mem_size / BLOCKS_PER_BYTE;
-    if (mem_size % BLOCKS_PER_BYTE)
+    pmmap_size = max_blocks / BLOCKS_PER_DWORD;
+    if (max_blocks % BLOCKS_PER_DWORD)
         pmmap_size++;
 
     memset(pmmap, 0xFF, pmmap_size);
