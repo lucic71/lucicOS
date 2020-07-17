@@ -52,7 +52,11 @@ SECTIONS {
         *(.note.gnu.build-id)
     }
 
+    _kernel_size = _kernel_end - _kernel_start;
+
 }
+
+ASSERT(_kernel_size < 0x300000, "Kernel size exceeds 3MB");
 
 /*
  * Note:
